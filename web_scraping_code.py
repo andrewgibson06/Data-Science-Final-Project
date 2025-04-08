@@ -6,6 +6,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
+from bs4 import BeautifulSoup
+import time
+import random
+import requests
 
 #creates the path to my chromedriver which is needed to run selenium
 driver_path = "C:\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe"
@@ -14,6 +18,7 @@ driver_path = "C:\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe"
 options = Options()
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--start-maximized")
 
 #creates the web driver using the path and options
 service = Service(driver_path)
@@ -33,31 +38,49 @@ print("Table loaded successfully")
 #identifies the headers
 header_spans = driver.find_elements(By.CSS_SELECTOR, "thead td span")
 headers = [h.text.strip() for h in header_spans if h.text.strip() != ""]
+headers.append("Player Profile URL")
 print(f"Headers: {headers}")
 
 #identfies the rows
 rows = driver.find_elements(By.CSS_SELECTOR, "tbody tr")
 data = []
 
-#loops through every row and collects the data, making sure that all of the columns are present
-#and skipping any rows that do not have the correct number of columns
+#loops through every row and collects the data
+# Inside your loop where you scrape player data:
+
 for row in rows:
     cols = row.find_elements(By.TAG_NAME, "td")
     row_data = [col.text.strip() for col in cols]
-    if len(row_data) == len(headers):
-        data.append(row_data)
+
+    if len(row_data) >= 1:
+        try:
+            player_elem = cols[0].find_element(By.TAG_NAME, "a")
+            player_link = player_elem.get_attribute("href")
+            if player_link and player_link.startswith("/cricketers"):
+                # Prepending the base URL to the relative URL
+                player_link = "https://www.espncricinfo.com" + player_link
+        except:
+            player_link = None
+        
+        if len(row_data) == len(headers) - 1:
+            row_data.append(player_link)
+            data.append(row_data)
+        else:
+            print(f"Skipping row due to mismatch: {row_data}")
     else:
-        print(f"Skipping row with incorrect column count: {row_data}")
+        print("Empty row")
 
-#converts the data to a dataframe
-df = pd.DataFrame(data, columns=headers)
-print(df.head())
-
-#saves it to a csv file
-df.to_csv("ilt20_batting_stats_2024.csv", index=False)
-print("Data saved successfully")
 
 #quits the opened browser
 driver.quit()
-print("Script finished")
+print("Finished initial scrape of table")
+
+#converts the data to a dataframe
+df = pd.DataFrame(data, columns=headers)
+print("Initial data collection from table:\n", df.head())
+
+#saves it to a csv file
+df.to_csv("ilt20_batting_stats_2025.csv", index=False)
+print("Data saved successfully")
+
 
