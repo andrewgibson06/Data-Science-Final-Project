@@ -46,8 +46,6 @@ rows = driver.find_elements(By.CSS_SELECTOR, "tbody tr")
 data = []
 
 #loops through every row and collects the data
-# Inside your loop where you scrape player data:
-
 for row in rows:
     cols = row.find_elements(By.TAG_NAME, "td")
     row_data = [col.text.strip() for col in cols]
@@ -57,7 +55,6 @@ for row in rows:
             player_elem = cols[0].find_element(By.TAG_NAME, "a")
             player_link = player_elem.get_attribute("href")
             if player_link and player_link.startswith("/cricketers"):
-                # Prepending the base URL to the relative URL
                 player_link = "https://www.espncricinfo.com" + player_link
         except:
             player_link = None
@@ -70,7 +67,6 @@ for row in rows:
     else:
         print("Empty row")
 
-
 #quits the opened browser
 driver.quit()
 print("Finished initial scrape of table")
@@ -82,5 +78,3 @@ print("Initial data collection from table:\n", df.head())
 #saves it to a csv file
 df.to_csv("ilt20_batting_stats_2025.csv", index=False)
 print("Data saved successfully")
-
-
