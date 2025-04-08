@@ -1,3 +1,4 @@
+#imports the necessary libraries: selenium as the table is dynamic and pandas to save the data
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -6,43 +7,40 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
 
-# Set the path to your chromedriver.exe
-driver_path = r"C:\chromedriver-win64\chromedriver-win64\chromedriver.exe"
+#creates the path to my chromedriver which is needed to run selenium
+driver_path = "C:\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe"
 
-# Set up Chrome options
+#set up options for the web driver, headless mode is not used as the table loads differently in headless mode
 options = Options()
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 
-# Create the driver
+#creates the web driver using the path and options
 service = Service(driver_path)
 driver = webdriver.Chrome(service=service, options=options)
 
-# Go to the target URL
+#loads the website
 url = "https://www.espncricinfo.com/records/tournament/batting-most-runs-career/international-league-t20-2024-25-16859"
 driver.get(url)
 
-# Wait for page to load fully
-WebDriverWait(driver, 60).until(
-    lambda d: d.execute_script("return document.readyState") == "complete"
-)
+#waits for the page to load fully before running script
+WebDriverWait(driver, 60).until(lambda d: d.execute_script("return document.readyState") == "complete")
 
-# Wait for the actual table to be present
-WebDriverWait(driver, 60).until(
-    EC.presence_of_element_located((By.CSS_SELECTOR, "table.ds-w-full.ds-table"))
-)
-print("✅ Table loaded successfully.")
+#waits for the table to fully load
+WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, "table.ds-w-full.ds-table")))
+print("Table loaded successfully")
 
-# --- GET HEADERS ---
+#identifies the headers
 header_spans = driver.find_elements(By.CSS_SELECTOR, "thead td span")
 headers = [h.text.strip() for h in header_spans if h.text.strip() != ""]
-
 print(f"Headers: {headers}")
 
-# --- GET ROW DATA ---
+#identfies the rows
 rows = driver.find_elements(By.CSS_SELECTOR, "tbody tr")
 data = []
 
+#loops through every row and collects the data, making sure that all of the columns are present
+#and skipping any rows that do not have the correct number of columns
 for row in rows:
     cols = row.find_elements(By.TAG_NAME, "td")
     row_data = [col.text.strip() for col in cols]
@@ -51,15 +49,15 @@ for row in rows:
     else:
         print(f"Skipping row with incorrect column count: {row_data}")
 
-# Convert to DataFrame
+#converts the data to a dataframe
 df = pd.DataFrame(data, columns=headers)
 print(df.head())
 
-# Save to CSV
+#saves it to a csv file
 df.to_csv("ilt20_batting_stats_2024.csv", index=False)
-print("✅ Data saved successfully!")
+print("Data saved successfully")
 
-# Quit browser
+#quits the opened browser
 driver.quit()
-print("✅ Web driver closed.")
+print("Script finished")
 
