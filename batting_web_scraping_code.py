@@ -6,10 +6,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
-from bs4 import BeautifulSoup
-import time
-import random
-import requests
 
 #creates the path to my chromedriver which is needed to run selenium
 driver_path = "C:\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe"
