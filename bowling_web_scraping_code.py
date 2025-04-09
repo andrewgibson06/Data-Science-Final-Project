@@ -34,29 +34,43 @@ print("Table loaded successfully")
 #identifies the headers
 header_spans = driver.find_elements(By.CSS_SELECTOR, "thead td span")
 headers = [h.text.strip() for h in header_spans if h.text.strip() != ""]
+headers.append("Player Profile URL")
 print(f"Headers: {headers}")
 
 #identfies the rows
 rows = driver.find_elements(By.CSS_SELECTOR, "tbody tr")
 data = []
 
-#checks that there is data matching the number of headers and then scrapes
+#loops through every row and collects the data
 for row in rows:
     cols = row.find_elements(By.TAG_NAME, "td")
     row_data = [col.text.strip() for col in cols]
-    if len(row_data) == len(headers):
-        data.append(row_data)
+
+    if len(row_data) >= 1:
+        try:
+            player_elem = cols[0].find_element(By.TAG_NAME, "a")
+            player_link = player_elem.get_attribute("href")
+            if player_link and player_link.startswith("/cricketers"):
+                player_link = "https://www.espncricinfo.com" + player_link
+        except:
+            player_link = None
+        
+        if len(row_data) == len(headers) - 1:
+            row_data.append(player_link)
+            data.append(row_data)
+        else:
+            print(f"Skipping row due to mismatch: {row_data}")
     else:
-        print(f"Skipping row with incorrect column count: {row_data}")
+        print("Empty row")
+
+#quits the opened browser
+driver.quit()
+print("Finished initial scrape of table")
 
 #converts the data to a dataframe
 df = pd.DataFrame(data, columns=headers)
-print(df.head())
+print("Initial data collection from table:\n", df.head())
 
 #saves it to a csv file
 df.to_csv("ilt20_bowling_stats_2025.csv", index=False)
 print("Data saved successfully")
-
-#quits the opened browser
-driver.quit()
-print("Script finished")
