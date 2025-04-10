@@ -5,12 +5,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import random
+import os
 
 #undetected chromedriver is used as other software is detected by the website and blocked pages from loading
 import undetected_chromedriver as uc
 
-#imports the bowling csv file
-csv_file_path = "ilt20_bowling_stats_2025.csv"
+#imports the batting csv file
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+csv_file_path = os.path.join(base_dir, "scraped_data", "ilt20_batting_stats_2025.csv")
 df = pd.read_csv(csv_file_path)
 
 #check that the player url is there
@@ -59,7 +61,8 @@ for index, row in df.iterrows():
 
 driver.quit()
 
-#saves the data to a new file
-output_file = "ilt20_bowling_stats_with_nationality_2025.csv"
+#saves it to a csv file by going to main folder and then going to the scraped_data folder
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+output_file = os.path.join("scraped_data", "ilt20_batting_stats_with_nationality_2025.csv")
 df.to_csv(output_file, index=False)
-print(f"Saved updated CSV to: {output_file}")
+print("Data saved successfully")

@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
+import os
 
 #creates the path to my chromedriver which is needed to run selenium
 driver_path = "C:\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe"
@@ -71,6 +72,8 @@ print("Finished initial scrape of table")
 df = pd.DataFrame(data, columns=headers)
 print("Initial data collection from table:\n", df.head())
 
-#saves it to a csv file
-df.to_csv("ilt20_batting_stats_2025.csv", index=False)
+#saves it to a csv file by going to main folder and then going to the scraped_data folder
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+output_file = os.path.join("scraped_data", "ilt20_batting_stats_2025.csv")
+df.to_csv(output_file, index=False)
 print("Data saved successfully")
