@@ -30,4 +30,4 @@ merged_stats = merged_stats.drop(columns=["Span_batting", "Span_bowling", "Playe
 merged_stats.rename(columns={"Mat_batting": "Matches"}, inplace=True)
 
 #saves the merged data frame to a new csv file
-merged_stats.to_csv("ilt20_final_statistics_2025.csv", index=False)
+merged_stats.to_csv("ilt20_final_player_statistics_2025.csv", index=False)
