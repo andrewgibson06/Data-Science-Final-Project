@@ -16,4 +16,5 @@ After scraping all of the data using the code contained in those files, you will
 
 The file "ilt20_data_analysis.ipynb" contains all of the code which was used in the creation of the blog post, such as making the graphs.
 
+All of the neccessary data is already included in the files, so if planning on re-running the web scrape code, please delete the .csv files in order to prevent duplicating the data.
 
