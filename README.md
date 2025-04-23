@@ -18,3 +18,14 @@ The file "ilt20_data_analysis.ipynb" contains all of the code which was used in 
 
 All of the necessary data is already included in the files, so if planning on re-running the web scrape code, please delete the CSV files in order to prevent duplicating the data.
 
+In order to run the code, please make sure you have downloaded the following:
+1) Google Chrome
+2) Pandas (pip install pandas)
+3) Selenium (pip install selenium)
+4) Undetected-Chrome Driver (pip install undetected-chromedriver) 
+5) ChromeDriver (Can be installed from https://sites.google.com/chromium.org/driver/)
+
+Once ChromeDriver has been installed, you will need to specify the path within the scripts batting_web_scraping_code.py and bowling_web_scraping_code.py in order for the scripts to run
+
+
+
