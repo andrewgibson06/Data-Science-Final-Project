@@ -12,7 +12,7 @@ It is important to leave a minimum of 30 minutes between running these scripts, 
 
 You can check whether each file has successfully downloaded by checking in the folder "scraped_data", which is where the CSV files are stored.
 
-After scraping all of the data using the code contained in those files, you will need to run "data_cleaning.py", which is contained in the main directory. This file will merge all of the scraped data into one CSV file named "ilt20_final_player_statistics_2025.csv" which is also saved in the main directory, and then merges the scraped data into one file, as well as performs other tasks such as renaming column headers and dropping redundant columns.
+After scraping all of the data using the code contained in those files, you will need to run "data_cleaning.py", which is contained in the main directory. This file will merge all of the scraped data into one CSV file named "ilt20_final_player_statistics_2025.csv" which is also saved in the main directory, as well as performs other tasks such as renaming column headers and dropping redundant columns.
 
 The file "ilt20_data_analysis.ipynb" contains all of the code which was used in the creation of the blog post, such as making the graphs.
 
