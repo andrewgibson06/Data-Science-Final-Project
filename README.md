@@ -25,7 +25,7 @@ In order to run the code, please make sure you have downloaded the following:
 4) Undetected-Chrome Driver (pip install undetected-chromedriver) 
 5) ChromeDriver (Can be installed from https://sites.google.com/chromium.org/driver/)
 
-Once ChromeDriver has been installed, you will need to specify the path within the scripts batting_web_scraping_code.py and bowling_web_scraping_code.py in order for the scripts to run
+Once ChromeDriver has been installed, you will need to specify the path within the scripts batting_web_scraping_code.py and bowling_web_scraping_code.py in order for the scripts to run.
 
 
 
